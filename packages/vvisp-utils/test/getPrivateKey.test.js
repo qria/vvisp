@@ -29,12 +29,16 @@ describe('# getPrivateKey test', function() {
       });
     });
 
-    it('should reject when index is not number or number string except undefined and null', function() {
-      expect(() => getPrivateKey(MNEMONIC, '123')).to.not.throw(TypeError);
+    it('should reject with invalid type: JSON or array', function() {
       expect(() => getPrivateKey(MNEMONIC, { a: 1 })).to.throw(TypeError);
       expect(() => getPrivateKey(MNEMONIC, ['hello', 'there'])).to.throw(
         TypeError
       );
+    });
+
+    it('should success getPrivateKey with number or number string', function() {
+      expect(() => getPrivateKey(MNEMONIC, '123')).to.not.throw();
+      expect(() => getPrivateKey(MNEMONIC, 123)).to.not.throw();
     });
 
     it('should set 0 when index is undefined or null', function() {
@@ -63,6 +67,12 @@ describe('# getPrivateKey test', function() {
       const result0 = getPrivateKey(MNEMONIC, 0);
       const result1 = getPrivateKey(MNEMONIC, 1);
       result0.should.not.equal(result1);
+    });
+
+    it('should be same with string index and number index', function() {
+      getPrivateKey(MNEMONIC, '123').should.be.equal(
+        getPrivateKey(MNEMONIC, 123)
+      );
     });
   });
 
